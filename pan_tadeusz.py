@@ -1,6 +1,9 @@
 import random
 import re
 
+def play():
+    pass
+
 pan_tadeusz = open('Pan_Tadeusz.txt')
 
 pan_tadeusz_lines = []
@@ -12,8 +15,7 @@ for x in pan_tadeusz:
 paragraphs = {}
 paragraph_number = 0
 wait_for_paragraph_start = True
-result = 0
-counter = 0
+
 
 for line in pan_tadeusz_lines:
     if line.startswith('Księga') and len(line.split()) == 2:
@@ -25,10 +27,6 @@ for line in pan_tadeusz_lines:
     elif not wait_for_paragraph_start:
         paragraphs[paragraph_number] = paragraphs.get(paragraph_number, [])
         paragraphs[paragraph_number].append(line)
-
-
-##for x in range(5):
-##    print(paragraphs[x])
 
 
 def draw_lines():
@@ -46,9 +44,6 @@ def draw_lines():
     random_line_last_word = re.sub(r'\W+', '', random_line_last_word)
     next_line_last_word = re.sub(r'\W+', '', next_line_last_word)
 
-    #print('random line: ', random_line, 'random line word: ', random_line_last_word)
-    #print('next line: ', next_line, 'next line word: ', next_line_last_word)
-
     if random_line_last_word and next_line_last_word:
         if random_line_last_word[-1] == next_line_last_word[-1]:
             return random_line, next_line
@@ -60,8 +55,6 @@ def draw_lines():
         return draw_lines()
 
 
-
-
 def secret_word(sentence):
     words = sentence.split()
     secret = re.sub(r'\W+', '', words[-1])
@@ -69,22 +62,26 @@ def secret_word(sentence):
     return sentence, secret
 
 
-print('Hit x to finish, c to continue.')
-while True:
-    counter = counter + 1
+def play():
+    counter = 0
+    result = 0
 
-    first_line, second_line = draw_lines()
-    second_line, secret = secret_word(second_line)
+    print('Hit x to finish, c to continue.')
+    while True:
+        counter = counter + 1
 
-    print('Your result: ', result, 'Question no. ', counter)
-    print(first_line)
-    # print(secret)
-    answer = input(second_line + ' ')
-    if answer == 'x':
-        exit()
-    elif secret == answer:
-        print('Great!')
-        result = result + 1
-    else:
-        print('Correct answer is: ', secret)
+        first_line, second_line = draw_lines()
+        second_line, secret = secret_word(second_line)
+
+        print('Your result: ', result, 'Question no. ', counter)
+        print(first_line)
+        # print(secret)
+        answer = input(second_line + ' ')
+        if answer == 'x':
+            break
+        elif secret == answer:
+            print('Great!')
+            result = result + 1
+        else:
+            print('Correct answer is: ', secret)
 
